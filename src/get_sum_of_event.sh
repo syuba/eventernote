@@ -37,7 +37,7 @@ while true ;  do
         continue
     fi
     if [ $((END)) -gt $((NOW))  -o $((END)) -lt $((START)) ];then
-        echo "指定した年が不正ですよ"
+        echo "指定した年が不正です"
         continue
     else
         # 出力ファイル名定義
@@ -52,7 +52,6 @@ while true ;  do
             echo ${y}": finished"
             exec_curl ${user} ${y} | sed -e "s/^ //g" > ${y}.txt
         done
-
 
         # グラフ用のデータ作成
         if [ -f ${FILE_NAME}.tsv ];then
