@@ -1,5 +1,6 @@
 # eventernote
 # sample request
+```
 sh get_sum_of_event.sh
 ■ アカウント名は？
 Schwarz_H
@@ -12,6 +13,7 @@ Schwarz_H
 2016: finished
 2017: finished
 completed!
+```
 # example result
 ```
 	 1	2	3	4	5	6	7	8	9	10	11	12
