@@ -41,7 +41,7 @@ while true ;  do
         continue
     else
         # 出力ファイル名定義
-        FILE_NAME=${user}_${START}-${END}
+        FILE_NAME=result/${user}_${START}-${END}
         # 出力ファイルが既に有ればbak
         if [ -e ${FILE_NAME}.tsv ];then 
             mv ${FILE_NAME}.tsv ${FILE_NAME}.tsv.old
@@ -62,7 +62,7 @@ while true ;  do
         for i in `seq $((START)) $((END))`
         do
             retu=("$i")
-            join -a 1 month.txt $i.txt | while read line
+            join -a 1 ./src/month.txt $i.txt | while read line
             do
                 month=`echo ${line} | awk '{print $1}'`
                 atai=`echo ${line} | awk '{print $2}'`

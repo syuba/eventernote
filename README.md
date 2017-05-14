@@ -2,7 +2,7 @@
 # sample request
 - 実行
 ```
-$ sh get_sum_of_event.sh
+$ sh ./src/get_sum_of_event.sh
 ```
 - レスポンス
 ```
@@ -20,7 +20,7 @@ completed!
 ```
 # sample tsv file
 ```
-$ open Schwarz_H_2013-2017.tsv
+$ open ./result/Schwarz_H_2013-2017.tsv
 ```
 ```
 	 1	2	3	4	5	6	7	8	9	10	11	12
