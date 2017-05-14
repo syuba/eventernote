@@ -40,23 +40,47 @@ while true ;  do
         echo "指定した年が不正ですよ"
         continue
     else
-        # 出力ファイルが既に有れば削除 
-        if [ -e ${user}_${START}-${END}.tsv ];then 
-            rm ${user}_${START}-${END}.tsv
+        # 出力ファイル名定義
+        FILE_NAME=${user}_${START}-${END}
+        # 出力ファイルが既に有ればbak
+        if [ -e ${FILE_NAME}.tsv ];then 
+            mv ${FILE_NAME}.tsv ${FILE_NAME}.tsv.old
         fi
-
         # 年別出力
         for y in `seq $((START)) $((END))`
         do
-            echo ${y}:
-            exec_curl ${user} ${y} > ${y}.txt
+            echo ${y}": finished"
+            exec_curl ${user} ${y} | sed -e "s/^ //g" > ${y}.txt
         done
-        # 1行目に年を追加してマージ
-        for i in `seq ${START} ${END}`
+
+
+        # グラフ用のデータ作成
+        if [ -f ${FILE_NAME}.tsv ];then
+            mv ${FILE_NAME}.tsv ${FILE_NAME}.tsv.old
+        fi
+        # 月
+        echo "	1	2	3	4	5	6	7	8	9	10	11	12" > ${FILE_NAME}.tsv
+        for i in `seq $((START)) $((END))`
         do
-            awk '{OFS="\t";print '$i',$0}' $i.txt >> ${user}_${START}-${END}.tsv && nkf -s --overwrite ${user}_${START}-${END}.tsv
+            retu=("$i")
+            join -a 1 month.txt $i.txt | while read line
+            do
+                month=`echo ${line} | awk '{print $1}'`
+                atai=`echo ${line} | awk '{print $2}'`
+                month=$((month))
+                if [ "$atai" = "" ];then
+                    atai=0
+                else
+                    atai=$((atai))
+                fi
+                retu=("${retu[@]}" $atai)
+                if [ "$month" = 12 ];then
+                    echo "${retu[@]}" | sed -e "s/ /	/g" >> ${FILE_NAME}.tsv
+                fi
+            done
         done
-        rm *txt
+#        rm *txt
+        echo "completed!"
         exit
     fi
 done
